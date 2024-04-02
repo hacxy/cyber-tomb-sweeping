@@ -1,0 +1,12 @@
+{
+  "name": "cyber-offer-sacrifices-root",
+  "version": "1.0.0",
+  "description": "赛博祭祀",
+  "main": "index.js",
+  "scripts": {
+    "dev:vue": "pnpm -F vue-app run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
