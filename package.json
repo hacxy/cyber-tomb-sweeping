@@ -4,7 +4,8 @@
   "description": "赛博祭祀",
   "main": "index.js",
   "scripts": {
-    "dev:vue": "pnpm -F vue-app run dev"
+    "dev:vue": "pnpm -F vue-app run dev",
+    "dev:nest": "pnpm -F nest-app run dev"
   },
   "keywords": [],
   "author": "",

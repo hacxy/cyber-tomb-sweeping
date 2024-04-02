@@ -1,20 +1,19 @@
-import { bootstrap } from 'uni-nest';
+// import { ApiProperty } from 'uni-nest';
 import { AppModule } from './app.module';
+import { bootstrap } from 'uni-nest';
+// class CommonVo {
+//   @ApiProperty()
+//   statusCode: number;
+//   @ApiProperty()
+//   message: string;
+// }
 
-// nestjs 入口程序
 bootstrap(AppModule, {
   swaggerOptions: {
-    title: 'Nestjs Project Template',
-    version: '0.0.1',
-    license: ['MIT', ''],
-    description: 'nestjs 模板项目接口文档',
-    contact: ['hacxy', 'hacxy.cn'],
-    swaggerPathPrefix: 'docs'
+    title: '测试swagger docs',
+    // customResponseType: CommonVo,
   },
-  appOptions: {
-    logger: ['error', 'warn', 'debug']
+  jwtVerifyOptions: {
+    secret: 'ss',
   },
-  beforeAppListen: function (app) {
-    app.setGlobalPrefix('/weapp');
-  }
 });
