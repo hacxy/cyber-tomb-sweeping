@@ -6,7 +6,8 @@
   "scripts": {
     "dev:vue": "pnpm -F vue-app run dev",
     "dev:nest": "pnpm -F nest-app run dev",
-    "build:nest": "pnpm -F nest-app run build"
+    "build:nest": "pnpm -F nest-app run build",
+    "db:ps": "pnpm -F nest-app run db:ps"
   },
   "keywords": [],
   "author": "",
