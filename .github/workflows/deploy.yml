@@ -23,7 +23,7 @@ jobs:
       - name: 项目安装依赖
         run: |
           cd packages/nest-app 
-          npm install
+          npm install --force
           npm run build
 
       # - name: 项目打包构建
