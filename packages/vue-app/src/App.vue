@@ -1,96 +1,181 @@
 <script setup lang="ts">
-import { Waline } from "@waline/client/component";
-const serverURL = "https://waline.vercel.app";
 import "@waline/client/style";
+import { Waline } from "@waline/client/component";
 import { ref } from "vue";
+import { showToast, showConfirmDialog } from "vant";
+import instance, { getFirstSacrifices, getCurrentCount } from "./service";
+import { reactive } from "vue";
+import { setIntervalAsync } from "tianjie";
+
+const serverURL = "https://waline.vercel.app";
 const showPopup = ref(false);
 const currentNum = ref(0);
+const name = ref("");
+const leftContent = ref("");
+const rightContent = ref("");
+const avatar = ref("/avatar.jpg");
 
+const sacrificesData = reactive({
+  name: "",
+  leftContent: "",
+  rightContent: "",
+  avatar: [],
+});
+const handleOversize = () => {
+  showToast("头像大小不能超过5M");
+};
 const handleClickBtn = () => {
   showPopup.value = true;
 };
 
-const afterRead = (file: File) => {
-  // 此时可以自行将文件上传至服务器
-  console.log(file);
+const getSacrificesData = async () => {
+  const res = await getFirstSacrifices();
+  currentNum.value = await getCurrentCount();
+  if (res) {
+    name.value = res.name;
+    leftContent.value = res.leftContent;
+    rightContent.value = res.rightContent;
+    avatar.value = res.avatar;
+  } else {
+    name.value = "";
+    leftContent.value = "";
+    rightContent.value = "";
+    avatar.value = "/avatar.jpg";
+  }
 };
-const name = ref("名字");
-const leftContent = ref("左侧内容");
-const rightContent = ref("右侧内容");
+getSacrificesData();
+const player = setIntervalAsync(async () => {
+  await getSacrificesData();
+}, 1000);
+
+player.start();
+
+const handleSubmit = async () => {
+  const count = name.value ? currentNum.value + 1 : currentNum.value;
+  showConfirmDialog({
+    title: "提示",
+    message: `您前面有 ${count} 个人, 是否确认登记?`,
+    beforeClose: async () => {
+      const formData = new FormData();
+      formData.append("avatar", (sacrificesData.avatar as any)[0].file);
+      const url = await instance
+        .post("/sacrifices/upload", formData)
+        .then((res) => res.data.data);
+      const data = {
+        ...sacrificesData,
+        avatar: url,
+      };
+
+      await instance.post("/sacrifices", data).then(() => {
+        showToast("提交成功");
+        sacrificesData.name = "";
+        sacrificesData.leftContent = "";
+        sacrificesData.rightContent = "";
+        sacrificesData.avatar = [];
+        showPopup.value = false;
+      });
+      return true;
+    },
+  });
+};
 </script>
 
 <template>
-  <van-sticky>
-    <van-notice-bar left-icon="volume-o" text="尊重逝者, 尊重他人." />
-  </van-sticky>
+  <VanSticky>
+    <van-notice-bar left-icon="volume-o" text="赛博上坟, 船新版本, 船新体验" />
+  </VanSticky>
   <div class="wrapper">
     <div class="content">
-      <van-image
+      <VanImage
         round
         class="avatar"
         width="70"
         height="70"
-        src="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
+        :src="avatar"
+        fit="cover"
       />
+
       <div class="name">{{ name }}</div>
       <div class="left-content">{{ leftContent }}</div>
       <div class="right-content">{{ rightContent }}</div>
-      <img src="./assets/01.gif" class="bg-image van-haptics-feedback" />
-      <van-button
+      <img src="/01.gif" class="bg-image van-haptics-feedback" />
+      <VanButton
         class="btn"
         type="primary"
-        size="normal"
+        size="large"
         @click="handleClickBtn"
-        >加入祭祀</van-button
       >
-      <div>当前祭祀人数: {{ currentNum }}</div>
+        登记
+      </VanButton>
+      <div>当前排队人数: {{ currentNum }}</div>
       <van-divider />
       <div class="waline-wrapper">
-        <Waline :serverURL="serverURL" path="/" />
+        <Waline :serverURL="serverURL" path="/sacrifices" />
       </div>
     </div>
   </div>
-  <van-popup
+  <VanPopup
     round
     v-model:show="showPopup"
     position="bottom"
     :style="{ height: '50%' }"
   >
     <div class="form-content">
-      <h4 class="title">加入祭祀</h4>
+      <h4 class="title">登记</h4>
 
-      <van-field name="uploader" label="上传头像:">
-        <template #input>
-          <van-uploader />
-        </template>
-      </van-field>
-      <van-field
-        v-model="name"
-        name="名称"
-        label="名称"
-        placeholder="请输入名称"
-        :rules="[{ required: true, message: '请填写名称' }]"
-      />
+      <VanForm @submit="handleSubmit">
+        <van-field
+          name="avatar"
+          label="上传头像:"
+          :rules="[
+            {
+              required: true,
+              message: '请上传头像',
+            },
+          ]"
+        >
+          <template #input>
+            <van-uploader
+              :max-size="1024 * 1024 * 5"
+              @oversize="handleOversize"
+              accept=".png, .jpg, .jpeg, .gif"
+              v-model="sacrificesData.avatar"
+              :max-count="1"
+            />
+          </template>
+        </van-field>
 
-      <van-field
-        v-model="leftContent"
-        name="左侧内容"
-        label="左侧内容"
-        placeholder="请输入左侧内容"
-        :rules="[{ required: true, message: '请填写左侧内容' }]"
-      />
-      <van-field
-        v-model="rightContent"
-        name="右侧内容"
-        label="右侧内容"
-        placeholder="请输入右侧内容"
-        :rules="[{ required: true, message: '请填写右侧内容' }]"
-      />
-      <van-button round block type="primary" native-type="submit">
-        提交
-      </van-button>
+        <van-field
+          v-model="sacrificesData.name"
+          name="name"
+          :maxlength="7"
+          label="名称"
+          placeholder="请输入名称"
+          :rules="[{ required: true, message: '请填写名称' }]"
+        />
+
+        <van-field
+          v-model="sacrificesData.leftContent"
+          name="leftContent"
+          label="左侧内容"
+          :maxlength="9"
+          placeholder="请输入左侧内容"
+          :rules="[{ required: true, message: '请填写左侧内容' }]"
+        />
+        <van-field
+          v-model="sacrificesData.rightContent"
+          name="rightContent"
+          label="右侧内容"
+          :maxlength="9"
+          placeholder="请输入右侧内容"
+          :rules="[{ required: true, message: '请填写右侧内容' }]"
+        />
+        <van-button round block type="primary" native-type="submit">
+          提交
+        </van-button>
+      </VanForm>
     </div>
-  </van-popup>
+  </VanPopup>
 </template>
 
 <style scoped lang="scss">

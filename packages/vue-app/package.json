@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.6.8",
     "normalize.css": "^8.0.1",
+    "tianjie": "^0.1.0",
     "vant": "^4.8.8",
     "vue": "^3.4.21"
   },

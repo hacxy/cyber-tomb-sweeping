@@ -18,7 +18,9 @@ bootstrap(AppModule, {
   jwtVerifyOptions: {
     secret: 'ss'
   },
+
   beforeAppListen(app) {
+    app.enableCors({ origin: '*' });
     app.use(static_(join(__dirname, '..', 'resource')));
   }
 });

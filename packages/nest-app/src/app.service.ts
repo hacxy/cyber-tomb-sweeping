@@ -55,12 +55,34 @@ export class AppService {
   }
 
   async getSacrificesCount() {
-    return this.prismaService.sacrifice.count();
+    const count = await this.prismaService.sacrifice.count();
+    if (count > 1) return count - 1;
+    else return 0;
   }
 
   async getFirstSacrifices() {
     const result = await this.prismaService.sacrifice.findFirst();
-    return transformDateTime(result);
+    if (result) {
+      const currentTime = Math.round(new Date().getTime() / 1000);
+      if (!result.showTime) {
+        await this.prismaService.sacrifice.update({
+          where: { id: result.id },
+          data: {
+            showTime: currentTime
+          }
+        });
+        return result;
+      } else {
+        if (currentTime - result.showTime >= 60) {
+          await this.prismaService.sacrifice.delete({
+            where: { id: result.id }
+          });
+          return await this.getFirstSacrifices();
+        } else {
+          return result;
+        }
+      }
+    }
   }
 
   async removeFirstSacrifices() {

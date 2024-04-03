@@ -20,6 +20,7 @@ model Sacrifice {
   leftContent  String?
   rightContent String?
   avatar       String?
+  showTime     Int?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
