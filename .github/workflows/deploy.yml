@@ -29,7 +29,7 @@ jobs:
         env:
           NODE_OPTIONS: --max_old_space_size=4096
         run: |
-          pnpm db:init
+          pnpm db:ps
           pnpm build:nest
 
       - name: 移动产物至到服务器
