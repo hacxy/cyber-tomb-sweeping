@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from './common/prisma/prisma.service';
 import { SacrificesDto } from './common/dto';
-import { transformDateTime } from 'src/utils';
+import { transformDateTime } from './utils';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { ConfigService } from '@nestjs/config';

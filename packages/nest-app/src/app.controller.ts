@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Method, UniDefine, ApiConsumes } from 'uni-nest';
-import { SacrificesDto } from 'src/common/dto';
-import { SacrificesVo } from 'src/common/vo';
+import { SacrificesDto } from './common/dto';
+import { SacrificesVo } from './common/vo';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 
 @Controller('sacrifices')
