@@ -156,18 +156,18 @@ const handleSubmit = async () => {
         <van-field
           v-model="sacrificesData.leftContent"
           name="leftContent"
-          label="左侧内容"
+          label="左侧碑文"
           :maxlength="9"
-          placeholder="请输入左侧内容"
-          :rules="[{ required: true, message: '请填写左侧内容' }]"
+          placeholder="请输入左侧碑文"
+          :rules="[{ required: true, message: '请填写左侧碑文' }]"
         />
         <van-field
           v-model="sacrificesData.rightContent"
           name="rightContent"
-          label="右侧内容"
+          label="右侧碑文"
           :maxlength="9"
-          placeholder="请输入右侧内容"
-          :rules="[{ required: true, message: '请填写右侧内容' }]"
+          placeholder="请输入右侧碑文"
+          :rules="[{ required: true, message: '请填写右侧碑文' }]"
         />
         <van-button round block type="primary" native-type="submit">
           提交
