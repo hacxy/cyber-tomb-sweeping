@@ -6,8 +6,8 @@ import { showToast, showConfirmDialog } from "vant";
 import instance, { getFirstSacrifices, getCurrentCount } from "./service";
 import { reactive } from "vue";
 import { setIntervalAsync } from "tianjie";
-
-const serverURL = "https://waline.vercel.app";
+import { WALINE_SERVICE_URL, WALINE_PATH } from "./config";
+// const serverURL = "https://waline.hacxy.cn";
 const showPopup = ref(false);
 const currentNum = ref(0);
 const name = ref("");
@@ -110,7 +110,7 @@ const handleSubmit = async () => {
       <div>当前排队人数: {{ currentNum }}</div>
       <van-divider />
       <div class="waline-wrapper">
-        <Waline :serverURL="serverURL" path="/sacrifices" />
+        <Waline :serverURL="WALINE_SERVICE_URL" :path="WALINE_PATH" />
       </div>
     </div>
   </div>
