@@ -14,7 +14,6 @@ const name = ref("");
 const leftContent = ref("");
 const rightContent = ref("");
 const avatar = ref("/avatar.jpg");
-
 const sacrificesData = reactive({
   name: "",
   leftContent: "",

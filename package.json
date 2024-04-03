@@ -1,15 +1,29 @@
 {
-  "name": "cyber-offer-sacrifices-root",
-  "version": "1.0.0",
-  "description": "赛博祭祀",
-  "main": "index.js",
+  "name": "vue-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev:vue": "pnpm -F vue-app run dev",
-    "dev:nest": "pnpm -F nest-app run dev",
-    "build:nest": "pnpm -F nest-app run build",
-    "db:pg": "pnpm -F nest-app run db:pg"
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
   },
-  "keywords": [],
-  "author": "",
-  "license": "MIT"
+  "dependencies": {
+    "axios": "^1.6.8",
+    "normalize.css": "^8.0.1",
+    "tianjie": "^0.1.0",
+    "vant": "^4.8.8",
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@vant/auto-import-resolver": "^1.1.0",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@waline/client": "^3.1.3",
+    "sass": "^1.72.0",
+    "typescript": "^5.2.2",
+    "unplugin-auto-import": "^0.17.5",
+    "unplugin-vue-components": "^0.26.0",
+    "vite": "^5.2.0",
+    "vue-tsc": "^2.0.6"
+  }
 }
