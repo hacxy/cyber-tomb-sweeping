@@ -58,13 +58,7 @@ const handleSubmit = async () => {
       const formData = new FormData();
       formData.append("avatar", (sacrificesData.avatar as any)[0].file);
       const url = await instance
-        .post("/sacrifices/upload", formData, {
-          headers: {
-            "Content-Type": `multipart/form-data; `,
-            Accept: "*/*",
-            "Access-Control-Allow-Origin": "*",
-          },
-        })
+        .post("/sacrifices/upload", formData)
         .then((res) => res.data.data);
       const data = {
         ...sacrificesData,
