@@ -39,7 +39,7 @@ jobs:
           source: "packages/nest-app/dist,packages/nest-app/ecosystem.config.js,packages/nest-app/package.json,packages/nest-app/prisma"
           target: "/${{secrets.SSH_USERNAME}}/Projects/.cyber-offer-sacrifices-api_temp/"
           rm: true
-          strip_components: 3
+          strip_components: 2
 
       - name: 执行远程脚本命令
         uses: appleboy/ssh-action@master
