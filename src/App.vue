@@ -7,6 +7,7 @@ import instance, { getFirstSacrifices, getCurrentCount } from "./service";
 import { reactive } from "vue";
 import { setIntervalAsync } from "tianjie";
 import { WALINE_SERVICE_URL, WALINE_PATH } from "./config";
+import { stringify } from "qs";
 // const serverURL = "https://waline.hacxy.cn";
 const showPopup = ref(false);
 const currentNum = ref(0);
@@ -65,7 +66,7 @@ const handleSubmit = async () => {
         avatar: url,
       };
 
-      await instance.post("/sacrifices", data).then(() => {
+      await instance.post("/sacrifices", stringify(data)).then(() => {
         showToast("提交成功");
         sacrificesData.name = "";
         sacrificesData.leftContent = "";
