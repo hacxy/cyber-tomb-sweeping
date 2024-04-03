@@ -30,6 +30,7 @@
     "@nestjs/serve-static": "^4.0.2",
     "@prisma/client": "5.11.0",
     "dayjs": "^1.11.10",
+    "express": "^4.19.2",
     "image-type": "^5.2.0",
     "lodash": "^4.17.21",
     "prisma": "^5.11.0",
