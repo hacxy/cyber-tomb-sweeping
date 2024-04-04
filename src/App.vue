@@ -7,6 +7,7 @@ import instance, { getFirstSacrifices, getCurrentCount } from "./service";
 import { reactive } from "vue";
 import { setIntervalAsync } from "tianjie";
 import { WALINE_SERVICE_URL, WALINE_PATH } from "./config";
+
 // const serverURL = "https://waline.hacxy.cn";
 const showPopup = ref(false);
 const currentNum = ref(0);
@@ -203,9 +204,11 @@ const handleSubmit = async () => {
       top: 100px;
       left: 50%;
       transform: translateX(-50%);
+      color: #575757;
     }
     .left-content,
     .right-content {
+      color: #575757;
       writing-mode: vertical-lr;
     }
     .left-content {
@@ -239,6 +242,12 @@ const handleSubmit = async () => {
   box-sizing: border-box;
   .title {
     text-align: center;
+  }
+}
+
+:deep(.waline-wrapper) {
+  .wl-editor {
+    box-sizing: border-box;
   }
 }
 </style>
