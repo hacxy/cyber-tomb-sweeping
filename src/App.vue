@@ -55,25 +55,27 @@ const handleSubmit = async () => {
   showConfirmDialog({
     title: "提示",
     message: `您前面有 ${count} 个人, 是否确认登记?`,
-    beforeClose: async () => {
-      const formData = new FormData();
-      formData.append("avatar", (sacrificesData.avatar as any)[0].file);
-      const url = await instance
-        .post("/sacrifices/upload", formData)
-        .then((res) => res.data.data);
-      const data = {
-        ...sacrificesData,
-        avatar: url,
-      };
+    beforeClose: async (status) => {
+      if (status === "confirm") {
+        const formData = new FormData();
+        formData.append("avatar", (sacrificesData.avatar as any)[0].file);
+        const url = await instance
+          .post("/sacrifices/upload", formData)
+          .then((res) => res.data.data);
+        const data = {
+          ...sacrificesData,
+          avatar: url,
+        };
 
-      await instance.post("/sacrifices", data).then(() => {
-        showToast("提交成功");
-        sacrificesData.name = "";
-        sacrificesData.leftContent = "";
-        sacrificesData.rightContent = "";
-        sacrificesData.avatar = [];
-        showPopup.value = false;
-      });
+        await instance.post("/sacrifices", data).then(() => {
+          showToast("提交成功");
+          sacrificesData.name = "";
+          sacrificesData.leftContent = "";
+          sacrificesData.rightContent = "";
+          sacrificesData.avatar = [];
+          showPopup.value = false;
+        });
+      }
       return true;
     },
   });
@@ -82,7 +84,20 @@ const handleSubmit = async () => {
 
 <template>
   <VanSticky>
-    <van-notice-bar left-icon="volume-o" text="赛博上坟, 船新版本, 船新体验" />
+    <VanNoticeBar left-icon="volume-o" :scrollable="false">
+      <VanSwipe
+        vertical
+        class="notice-swipe"
+        :autoplay="3000"
+        :touchable="false"
+        :show-indicators="false"
+      >
+        <VanSwipeItem>足不出户, 赛博扫墓</VanSwipeItem>
+        <VanSwipeItem>低碳环保</VanSwipeItem>
+        <VanSwipeItem>尊重逝者, 尊重他人</VanSwipeItem>
+        <van-swipe-item>今人不见古时月，今月曾经照古人</van-swipe-item>
+      </VanSwipe>
+    </VanNoticeBar>
   </VanSticky>
   <div class="wrapper">
     <div class="content">
@@ -149,7 +164,7 @@ const handleSubmit = async () => {
           v-model="sacrificesData.name"
           name="name"
           :maxlength="7"
-          label="名称"
+          label="名称:"
           placeholder="请输入名称"
           :rules="[{ required: true, message: '请填写名称' }]"
         />
@@ -157,7 +172,7 @@ const handleSubmit = async () => {
         <van-field
           v-model="sacrificesData.leftContent"
           name="leftContent"
-          label="左侧碑文"
+          label="左侧碑文:"
           :maxlength="9"
           placeholder="请输入左侧碑文"
           :rules="[{ required: true, message: '请填写左侧碑文' }]"
@@ -165,7 +180,7 @@ const handleSubmit = async () => {
         <van-field
           v-model="sacrificesData.rightContent"
           name="rightContent"
-          label="右侧碑文"
+          label="右侧碑文:"
           :maxlength="9"
           placeholder="请输入右侧碑文"
           :rules="[{ required: true, message: '请填写右侧碑文' }]"
@@ -240,6 +255,7 @@ const handleSubmit = async () => {
 .form-content {
   padding: 0 20px;
   box-sizing: border-box;
+  padding-bottom: 20px;
   .title {
     text-align: center;
   }
@@ -249,5 +265,9 @@ const handleSubmit = async () => {
   .wl-editor {
     box-sizing: border-box;
   }
+}
+.notice-swipe {
+  height: 40px;
+  line-height: 40px;
 }
 </style>
